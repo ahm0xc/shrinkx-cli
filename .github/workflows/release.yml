@@ -1,0 +1,29 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: linux-amd64
+          - os: macos-latest
+            target: macos-arm64
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun build src/index.ts --compile --outfile dist/shrinkx
+      - run: mv dist/shrinkx shrinkx-${{ matrix.target }}
+      - run: ./shrinkx-${{ matrix.target }} --version
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: shrinkx-${{ matrix.target }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

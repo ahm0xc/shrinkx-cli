@@ -24,7 +24,17 @@
 
 ## 📦 Installation
 
-> Installation instructions will be available soon. Stay tuned!
+### Quick Install (curl)
+
+```bash
+curl -fsSL https://github.com/ahm0xc/shrinkx-cli/raw/main/scripts/install.sh | sh
+```
+
+Or install a specific version:
+
+```bash
+curl -fsSL https://github.com/ahm0xc/shrinkx-cli/raw/main/scripts/install.sh | sh -s -- v0.0.1
+```
 
 ---
 

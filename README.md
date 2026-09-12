@@ -33,7 +33,27 @@ curl -fsSL https://github.com/ahm0xc/shrinkx-cli/raw/main/scripts/install.sh | s
 Or install a specific version:
 
 ```bash
-curl -fsSL https://github.com/ahm0xc/shrinkx-cli/raw/main/scripts/install.sh | sh -s -- v0.0.1
+curl -fsSL https://github.com/ahm0xc/shrinkx-cli/raw/main/scripts/install.sh | sh -s -- install v0.0.1
+```
+
+### Upgrade
+
+Upgrade to the latest version using the built-in command:
+
+```bash
+shrinkx upgrade
+```
+
+Or use the install script with upgrade mode:
+
+```bash
+curl -fsSL https://github.com/ahm0xc/shrinkx-cli/raw/main/scripts/install.sh | sh -s -- upgrade
+```
+
+Or upgrade to a specific version:
+
+```bash
+curl -fsSL https://github.com/ahm0xc/shrinkx-cli/raw/main/scripts/install.sh | sh -s -- upgrade v0.0.1
 ```
 
 ---

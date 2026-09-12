@@ -5,6 +5,9 @@ import pc from "picocolors";
 
 import { IMAGE_FORMATS, VIDEO_FORMATS } from "../constants";
 import { isValidFormat } from "../utils";
+import { upgrade } from "./upgrade";
+
+export { upgrade };
 
 export function compress(
   files: string[],

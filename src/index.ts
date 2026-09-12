@@ -3,12 +3,13 @@ import { Command } from "commander";
 
 import { version } from "../package.json";
 import { setup } from "./commands/setup";
-import { compress } from "./commands";
+import { compress, upgrade } from "./commands";
 
 const program = new Command();
 program.name("shrinkx").version(version, "-v, --version");
 
 program.addCommand(setup);
+program.addCommand(upgrade);
 
 program
   .argument("<files...>", "Files or folders to compress")

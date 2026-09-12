@@ -2,7 +2,8 @@
 set -euo pipefail
 
 INSTALL_DIR="${SHRINKX_INSTALL_DIR:-/usr/local/bin}"
-VERSION="${1:-latest}"
+MODE="${1:-install}"
+VERSION="${2:-latest}"
 
 detect_arch() {
   case "$(uname -m)" in
@@ -34,12 +35,25 @@ if [ "$VERSION" = "latest" ]; then
   VERSION="${LATEST_TAG#v}"
   DOWNLOAD_URL="${BASE_URL}/download/${LATEST_TAG}/shrinkx-${OS}-${ARCH}"
 else
+  VERSION="${VERSION#v}"
   DOWNLOAD_URL="${BASE_URL}/download/v${VERSION}/shrinkx-${OS}-${ARCH}"
 fi
 
-echo "Downloading shrinkx v${VERSION} for ${OS}/${ARCH}..."
-curl -fsSL "$DOWNLOAD_URL" -o "${INSTALL_DIR}/shrinkx"
-chmod +x "${INSTALL_DIR}/shrinkx"
-
-echo "shrinkx installed successfully at ${INSTALL_DIR}/shrinkx"
-"${INSTALL_DIR}/shrinkx" --version 2>/dev/null || true
+if [ "$MODE" = "upgrade" ]; then
+  if [ ! -f "${INSTALL_DIR}/shrinkx" ]; then
+    echo "Error: shrinkx not found at ${INSTALL_DIR}/shrinkx. Install it first." >&2
+    exit 1
+  fi
+  echo "Upgrading shrinkx..."
+  curl -fsSL "$DOWNLOAD_URL" -o "${INSTALL_DIR}/shrinkx.tmp"
+  chmod +x "${INSTALL_DIR}/shrinkx.tmp"
+  mv "${INSTALL_DIR}/shrinkx.tmp" "${INSTALL_DIR}/shrinkx"
+  echo "shrinkx upgraded successfully to v${VERSION}"
+  "${INSTALL_DIR}/shrinkx" --version
+else
+  echo "Downloading shrinkx v${VERSION} for ${OS}/${ARCH}..."
+  curl -fsSL "$DOWNLOAD_URL" -o "${INSTALL_DIR}/shrinkx"
+  chmod +x "${INSTALL_DIR}/shrinkx"
+  echo "shrinkx installed successfully at ${INSTALL_DIR}/shrinkx"
+  "${INSTALL_DIR}/shrinkx" --version 2>/dev/null || true
+fi
